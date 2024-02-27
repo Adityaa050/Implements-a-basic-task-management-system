@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Task structure
+struct Task {
+    string name;
+    bool completed;
+};
+
+// TaskManager class
+class TaskManager {
+private:
+    vector<Task> tasks;
+
+public:
+    // Function to add a task
+    void addTask(const string& taskName) {
+        tasks.push_back({taskName, false});
+        cout << "Task '" << taskName << "' added.\n";
+    }
+
+    // Function to mark a task as completed
+    void completeTask(int index) {
+        if (index >= 0 && index < tasks.size()) {
+            tasks[index].completed = true;
+            cout << "Task '" << tasks[index].name << "' marked as completed.\n";
+        } else {
+            cout << "Invalid task index.\n";
+        }
+    }
+
+    // Function to list all tasks
+    void listTasks() {
+        if (tasks.empty()) {
+            cout << "No tasks to display.\n";
+        } else {
+            cout << "Tasks:\n";
+            for (size_t i = 0; i < tasks.size(); ++i) {
+                cout << i + 1 << ". " << tasks[i].name;
+                if (tasks[i].completed) {
+                    cout << " - Completed";
+                }
+                cout << endl;
+            }
+        }
+    }
+
+    // Function to delete a task
+    void deleteTask(int index) {
+        if (index >= 0 && index < tasks.size()) {
+            cout << "Task '" << tasks[index].name << "' deleted.\n";
+            tasks.erase(tasks.begin() + index);
+        } else {
+            cout << "Invalid task index.\n";
+        }
+    }
+};
+
+int main() {
+    TaskManager taskManager;
+    int choice;
+    string taskName;
+    int index;
+
+    do {
+        cout << "\nTask Manager Menu:\n";
+        cout << "1. Add Task\n";
+        cout << "2. Mark Task as Completed\n";
+        cout << "3. List All Tasks\n";
+        cout << "4. Delete Task\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter task name: ";
+                cin.ignore();
+                getline(cin, taskName);
+                taskManager.addTask(taskName);
+                break;
+            case 2:
+                cout << "Enter task index to mark as completed: ";
+                cin >> index;
+                taskManager.completeTask(index - 1);
+                break;
+            case 3:
+                taskManager.listTasks();
+                break;
+            case 4:
+                cout << "Enter task index to delete: ";
+                cin >> index;
+                taskManager.deleteTask(index - 1);
+                break;
+            case 5:
+                cout << "Exiting...\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
